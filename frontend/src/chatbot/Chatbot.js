@@ -7,7 +7,7 @@ import SendIcon from "@mui/icons-material/Send";
 import { Modal, ModalBody } from "react-bootstrap";
 
 const Chatbot = () => {
-  let api = "http://localhost:5000";
+  let api = "https://suddenly-gentle-scorpion.ngrok-free.app";
   const [pdfUrl, setPdfUrl] = useState("");
   const [pdfId, setpdfId] = useState("");
   const [showpdf, setshowpdf] = useState(false);
