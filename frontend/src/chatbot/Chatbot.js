@@ -7,7 +7,7 @@ import SendIcon from "@mui/icons-material/Send";
 import { Modal, ModalBody } from "react-bootstrap";
 
 const Chatbot = () => {
-  let api = 'http://localhost:5000';
+  let api = "http://localhost:5000";
   const [pdfUrl, setPdfUrl] = useState("");
   const [pdfId, setpdfId] = useState("");
   const [showpdf, setshowpdf] = useState(false);
@@ -21,9 +21,14 @@ const Chatbot = () => {
     const fetchPdf = async () => {
       try {
         const response = await axios.get(`${api}/view/${pdfId}`, {
+          headers: {
+            "ngrok-skip-browser-warning": "true",
+          },
           responseType: "blob",
         });
-        const url = URL.createObjectURL(new Blob([response.data], { type: "application/pdf" }));
+        const url = URL.createObjectURL(
+          new Blob([response.data], { type: "application/pdf" })
+        );
         setPdfUrl(url);
       } catch (error) {
         console.error("Error fetching the PDF", error);
@@ -48,7 +53,13 @@ const Chatbot = () => {
 
     try {
       const start = new Date().getTime();
-      const response = await axios.post(`${api}/chat`, { message: userMessage });
+      const response = await axios.post(`${api}/chat`, {
+        message: userMessage,
+        headers: {
+          "Content-Type": "multipart/form-data",
+          "ngrok-skip-browser-warning": "true",
+        },
+      });
       const end = new Date().getTime();
 
       const botMessage = response.data.response.response;
@@ -84,13 +95,21 @@ const Chatbot = () => {
         <div style={{ display: "flex", justifyContent: "space-around" }}>
           <div style={{ marginRight: "auto" }}></div>
           <div style={{ display: "flex", justifyContent: "flex-end" }}>
-            <button className="btn-close pt-5 pe-5" type="button" onClick={() => setshowpdf(false)}></button>
+            <button
+              className="btn-close pt-5 pe-5"
+              type="button"
+              onClick={() => setshowpdf(false)}
+            ></button>
           </div>
         </div>
         <ModalBody style={{ marginTop: "-2rem", marginBottom: "1.5rem" }}>
           <div>
             {pdfUrl ? (
-              <iframe src={pdfUrl} style={{ width: "100%", height: "600px" }} frameBorder="0"></iframe>
+              <iframe
+                src={pdfUrl}
+                style={{ width: "100%", height: "600px" }}
+                frameBorder="0"
+              ></iframe>
             ) : (
               <p>Loading PDF...</p>
             )}
@@ -111,16 +130,26 @@ const Chatbot = () => {
             <div className={`message-bubble ${msg.sender}`}>
               <div className="px-2">{msg.text}</div>
               {msg.sender === "bot" && msg.data && msg.data.length !== 0 && (
-                <div style={{ overflowX: "auto", maxHeight: "50vh" }} className="px-2 mt-3 mb-1">
+                <div
+                  style={{ overflowX: "auto", maxHeight: "50vh" }}
+                  className="px-2 mt-3 mb-1"
+                >
                   {msg.data && msg.data.length > 0 && (
-                    <table style={{ fontSize: "1rem", tableLayout: "auto" }} className="table table-bordered table-auto">
+                    <table
+                      style={{ fontSize: "1rem", tableLayout: "auto" }}
+                      className="table table-bordered table-auto"
+                    >
                       <thead className="table-primary">
                         <tr>
                           {Object.keys(msg.data[0])
                             .filter((key) => key !== "id")
                             .map((key) => (
                               <th key={key} style={{ whiteSpace: "nowrap" }}>
-                                {key.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())}{" "}
+                                {key
+                                  .replace(/_/g, " ")
+                                  .replace(/\b\w/g, (l) =>
+                                    l.toUpperCase()
+                                  )}{" "}
                               </th>
                             ))}
                         </tr>
@@ -180,7 +209,10 @@ const Chatbot = () => {
           onChange={handleInputChange}
           onKeyPress={handleKeyPress}
         />
-        <button className="btn btn-primary form-control" onClick={handleSendMessage}>
+        <button
+          className="btn btn-primary form-control"
+          onClick={handleSendMessage}
+        >
           <div style={{ display: "flex", justifyContent: "center" }}>
             <div>
               <h5>Send</h5>
