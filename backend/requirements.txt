@@ -1,0 +1,9 @@
+Flask
+Flask-CORS
+Flask-SQLAlchemy
+Flask-Marshmallow
+SQLAlchemy
+Werkzeug
+fpdf
+mysqlclient
+marshmallow-sqlalchemy
