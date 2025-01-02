@@ -8,6 +8,7 @@ import { Modal, ModalBody } from "react-bootstrap";
 
 const Chatbot = () => {
   let api = "https://suddenly-gentle-scorpion.ngrok-free.app";
+  // let api = "http://127.0.0.1:5000";
   const [pdfUrl, setPdfUrl] = useState("");
   const [pdfId, setpdfId] = useState("");
   const [showpdf, setshowpdf] = useState(false);
